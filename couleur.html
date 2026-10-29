@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Petit Génie : découvre 10 couleurs et amuse-toi à les mélanger.">
+<title>Petit Génie — Les Couleurs</title>
+<style>
+:root{--blue:#168bd2;--navy:#164b71;--sky:#dff6ff;--yellow:#ffcf4a;--green:#3bbd7a;--ink:#25465a}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(#e9faff,#fffdf3);min-height:100vh}
+header{padding:18px clamp(14px,4vw,44px);background:#fff;box-shadow:0 4px 18px #174d6c12;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-size:clamp(22px,3vw,32px);font-weight:900;color:#168bd2}
+.brand .mascot{font-size:38px}
+.brand small{display:block;font-size:12px;color:#e98c24;font-weight:700}
+nav{display:flex;gap:7px;flex-wrap:wrap}
+nav a,.lang button{border:0;border-radius:22px;background:#eef8ff;color:#24516c;padding:10px 14px;text-decoration:none;font-weight:800;cursor:pointer}
+nav a.active{background:#168bd2;color:white}
+.lang{display:flex;gap:4px}.lang button{padding:8px 10px}
+.hero{margin:18px auto 22px;max-width:1200px;padding:26px 16px;text-align:center;border-radius:28px;background:linear-gradient(120deg,#ffdf7e,#fff0b6);border:4px solid white;box-shadow:0 8px 20px #36718b18}
+.hero h1{margin:0;color:#147db8;font-size:clamp(32px,6vw,58px);text-shadow:2px 3px white}
+.hero p{margin:8px 0 0;font-size:clamp(16px,2vw,21px);font-weight:800;color:#187c6b}
+main{max-width:1200px;margin:auto;padding:0 16px 34px}
+.section-title{font-size:clamp(22px,3vw,30px);margin:26px 0 14px;color:#176f9d}
+.color-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.color-card{background:white;border:2px solid #d9eff8;border-radius:18px;padding:10px;text-align:center;box-shadow:0 5px 12px #1e70910c;transition:.18s}
+.color-card:hover{transform:translateY(-3px);border-color:#7ac8eb}
+.color-card img{width:100%;max-width:150px;display:block;margin:auto;aspect-ratio:4/3;object-fit:contain}
+.color-card h3{margin:3px 0 8px;font-size:clamp(14px,1.7vw,18px)}
+.listen{border:0;border-radius:18px;background:#e4f6ff;color:#147cb2;padding:7px 12px;font-weight:800;cursor:pointer}
+.mix-panel{background:#fff;border:3px solid #cceef9;border-radius:24px;padding:clamp(16px,3vw,28px);box-shadow:0 8px 18px #1e70910b}
+.mix-intro{margin-top:-5px}
+.mix-controls{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;margin:20px 0}
+select{width:100%;padding:13px;border:2px solid #cce7f3;border-radius:14px;font-size:16px;font-weight:800;color:#24516c;background:white}
+.plus{font-size:30px;font-weight:900;color:#e6a72b;text-align:center}
+.mix-result{display:flex;align-items:center;gap:18px;background:#f4fbff;border-radius:18px;padding:16px;flex-wrap:wrap}
+.result-dot{width:90px;height:90px;flex:0 0 90px;border-radius:50%;background:#b8c6d1;border:5px solid white;box-shadow:0 2px 10px #0002}
+.result-text{flex:1;min-width:180px}.result-text strong{font-size:22px;display:block}.result-text p{margin:5px 0}
+.primary{border:0;border-radius:24px;padding:12px 20px;background:#168bd2;color:white;font-size:16px;font-weight:900;cursor:pointer;box-shadow:0 4px 0 #0c659c}
+.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #0c659c}
+.quiz{margin-top:24px;background:#fff9e7;border:2px dashed #f1c85b;border-radius:20px;padding:20px}
+.quiz-options{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.quiz-options button{border:2px solid #dceef6;border-radius:20px;padding:10px 16px;background:white;font-weight:800;cursor:pointer}
+.feedback{font-weight:900;min-height:26px;margin-top:12px}
+footer{text-align:center;padding:22px;color:#52839a;font-weight:700}
+@media(max-width:760px){.color-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mix-controls{grid-template-columns:1fr}.plus{line-height:1}.hero{margin:12px}.color-card img{max-width:120px}}
+@media(min-width:761px) and (max-width:980px){.color-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><span class="mascot">🧒</span><div>Petit Génie<small>Apprendre en s'amusant !</small></div></div>
+  <nav aria-label="Navigation principale">
+    <a href="index.html">🏠 Accueil</a><a href="animaux.html">🐾 Animaux</a><a class="active" href="couleur.html">🌈 Couleurs</a><a href="Chiffre.html">🔢 Chiffres</a>
+  </nav>
+  <div class="lang" aria-label="Choisir la langue"><button onclick="setLang('fr')">🇫🇷 FR</button><button onclick="setLang('en')">🇬🇧 EN</button><button onclick="setLang('ar')">🇲🇦 AR</button></div>
+</header>
+<section class="hero">
+  <h1 id="heroTitle">🌈 Les Couleurs 🌈</h1>
+  <p id="heroSub">Regarde, écoute et apprends à mélanger les couleurs !</p>
+</section>
+<main>
+  <h2 class="section-title" id="learnTitle">🎨 Découvre 10 couleurs</h2>
+  <section class="color-grid" id="colorGrid" aria-label="Les dix couleurs"></section>
+
+  <h2 class="section-title" id="mixTitle">🧪 Atelier magique : mélange les couleurs</h2>
+  <section class="mix-panel">
+    <p class="mix-intro" id="mixIntro">Choisis deux couleurs, puis appuie sur « Mélanger » pour découvrir la couleur obtenue.</p>
+    <div class="mix-controls">
+      <select id="colorA" aria-label="Première couleur"></select>
+      <div class="plus">+</div>
+      <select id="colorB" aria-label="Deuxième couleur"></select>
+    </div>
+    <button class="primary" id="mixButton" onclick="mixColors()">✨ Mélanger !</button>
+    <div class="mix-result" style="margin-top:18px">
+      <div class="result-dot" id="resultDot"></div>
+      <div class="result-text"><strong id="resultName">Ta couleur magique apparaîtra ici !</strong><p id="resultDesc">Essaie rouge + jaune, ou bleu + jaune.</p></div>
+    </div>
+    <div class="quiz">
+      <h3 id="quizTitle">⭐ Petit défi</h3>
+      <p id="quizQuestion">Quelle couleur obtient-on en mélangeant le bleu et le jaune ?</p>
+      <div class="quiz-options" id="quizOptions"></div>
+      <div class="feedback" id="quizFeedback" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+<footer id="footerText">Petit Génie • J'apprends en m'amusant !</footer>
+<script>
+const colors = [
+ {id:"rouge",hex:"#F04444",fr:"Rouge",en:"Red",ar:"أحمر",img:"images/rouge.svg"},
+ {id:"bleu",hex:"#3185F5",fr:"Bleu",en:"Blue",ar:"أزرق",img:"images/bleu.svg"},
+ {id:"jaune",hex:"#FFD43B",fr:"Jaune",en:"Yellow",ar:"أصفر",img:"images/jaune.svg"},
+ {id:"vert",hex:"#36B765",fr:"Vert",en:"Green",ar:"أخضر",img:"images/vert.svg"},
+ {id:"orange",hex:"#FF922B",fr:"Orange",en:"Orange",ar:"برتقالي",img:"images/orange.svg"},
+ {id:"violet",hex:"#9B5DE5",fr:"Violet",en:"Purple",ar:"بنفسجي",img:"images/violet.svg"},
+ {id:"rose",hex:"#F783AC",fr:"Rose",en:"Pink",ar:"وردي",img:"images/rose.svg"},
+ {id:"noir",hex:"#343A40",fr:"Noir",en:"Black",ar:"أسود",img:"images/noir.svg"},
+ {id:"blanc",hex:"#FFFFFF",fr:"Blanc",en:"White",ar:"أبيض",img:"images/blanc.svg"},
+ {id:"marron",hex:"#A97142",fr:"Marron",en:"Brown",ar:"بني",img:"images/marron.svg"}
+];
+const translations = {
+ fr:{hero:"🌈 Les Couleurs 🌈",sub:"Regarde, écoute et apprends à mélanger les couleurs !",learn:"🎨 Découvre 10 couleurs",mix:"🧪 Atelier magique : mélange les couleurs",intro:"Choisis deux couleurs, puis appuie sur « Mélanger » pour découvrir la couleur obtenue.",mixBtn:"✨ Mélanger !",result:"Ta couleur magique apparaîtra ici !",desc:"Essaie rouge + jaune, ou bleu + jaune.",quiz:"⭐ Petit défi",question:"Quelle couleur obtient-on en mélangeant le bleu et le jaune ?",correct:"Bravo ! Bleu + jaune = vert ! 🎉",wrong:"Essaie encore ! Pense aux couleurs de la nature.",footer:"Petit Génie • J'apprends en m'amusant !",speak:"Écouter"},
+ en:{hero:"🌈 Colours 🌈",sub:"Look, listen and learn to mix colours!",learn:"🎨 Discover 10 colours",mix:"🧪 Magic workshop: mix colours",intro:"Choose two colours, then press “Mix” to discover the result.",mixBtn:"✨ Mix!",result:"Your magic colour will appear here!",desc:"Try red + yellow, or blue + yellow.",quiz:"⭐ Mini challenge",question:"What colour do we get by mixing blue and yellow?",correct:"Great job! Blue + yellow = green! 🎉",wrong:"Try again! Think of the colours in nature.",footer:"Petit Génie • Learning is fun!",speak:"Listen"},
+ ar:{hero:"🌈 الألوان 🌈",sub:"شاهد واستمع وتعلّم مزج الألوان!",learn:"🎨 اكتشف 10 ألوان",mix:"🧪 ورشة سحرية: امزج الألوان",intro:"اختر لونين ثم اضغط على «امزج» لاكتشاف اللون الناتج.",mixBtn:"✨ امزج!",result:"سيظهر لونك السحري هنا!",desc:"جرّب الأحمر مع الأصفر، أو الأزرق مع الأصفر.",quiz:"⭐ تحدٍ صغير",question:"ما اللون الناتج عن مزج الأزرق والأصفر؟",correct:"أحسنت! الأزرق + الأصفر = الأخضر! 🎉",wrong:"حاول مرة أخرى! فكّر في ألوان الطبيعة.",footer:"Petit Génie • أتعلم وأستمتع!",speak:"استمع"}
+};
+let lang="fr";
+function label(c){return c[lang] || c.fr}
+function speak(text){if(!("speechSynthesis" in window)){alert("Audio not supported in this browser.");return} speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang==="ar"?"ar-SA":lang==="en"?"en-GB":"fr-FR";speechSynthesis.speak(u)}
+function renderColors(){
+ document.getElementById("colorGrid").innerHTML=colors.map(c=>`<article class="color-card"><img src="${c.img}" alt="${label(c)}"><h3>${label(c)}</h3><button class="listen" onclick="speak('${label(c)}')">🔊 ${translations[lang].speak}</button></article>`).join("");
+ const options=colors.map(c=>`<option value="${c.id}">${label(c)}</option>`).join("");
+ document.getElementById("colorA").innerHTML=options;document.getElementById("colorB").innerHTML=options;
+ document.getElementById("colorA").value="rouge";document.getElementById("colorB").value="jaune";
+ document.getElementById("quizOptions").innerHTML=["vert","orange","violet"].map(id=>`<button onclick="answerQuiz('${id}')">${label(colors.find(c=>c.id===id))}</button>`).join("");
+}
+function setLang(next){
+ lang=next;document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr";
+ const t=translations[lang];
+ document.getElementById("heroTitle").textContent=t.hero;document.getElementById("heroSub").textContent=t.sub;
+ document.getElementById("learnTitle").textContent=t.learn;document.getElementById("mixTitle").textContent=t.mix;
+ document.getElementById("mixIntro").textContent=t.intro;document.getElementById("mixButton").textContent=t.mixBtn;
+ document.getElementById("resultName").textContent=t.result;document.getElementById("resultDesc").textContent=t.desc;
+ document.getElementById("quizTitle").textContent=t.quiz;document.getElementById("quizQuestion").textContent=t.question;
+ document.getElementById("footerText").textContent=t.footer;document.getElementById("quizFeedback").textContent="";
+ renderColors();
+}
+const mixMap={
+ "rouge+jaune":{hex:"#FF922B",fr:"Orange",en:"Orange",ar:"برتقالي"},
+ "jaune+rouge":{hex:"#FF922B",fr:"Orange",en:"Orange",ar:"برتقالي"},
+ "bleu+jaune":{hex:"#36B765",fr:"Vert",en:"Green",ar:"أخضر"},
+ "jaune+bleu":{hex:"#36B765",fr:"Vert",en:"Green",ar:"أخضر"},
+ "rouge+bleu":{hex:"#9B5DE5",fr:"Violet",en:"Purple",ar:"بنفسجي"},
+ "bleu+rouge":{hex:"#9B5DE5",fr:"Violet",en:"Purple",ar:"بنفسجي"},
+ "rouge+blanc":{hex:"#F783AC",fr:"Rose",en:"Pink",ar:"وردي"},
+ "blanc+rouge":{hex:"#F783AC",fr:"Rose",en:"Pink",ar:"وردي"},
+ "noir+blanc":{hex:"#92979B",fr:"Gris",en:"Grey",ar:"رمادي"},
+ "blanc+noir":{hex:"#92979B",fr:"Gris",en:"Grey",ar:"رمادي"},
+ "jaune+bleu":{hex:"#36B765",fr:"Vert",en:"Green",ar:"أخضر"},
+ "orange+bleu":{hex:"#8B7355",fr:"Brun doux",en:"Soft brown",ar:"بني فاتح"},
+ "bleu+orange":{hex:"#8B7355",fr:"Brun doux",en:"Soft brown",ar:"بني فاتح"},
+ "rouge+vert":{hex:"#9A6B4F",fr:"Brun",en:"Brown",ar:"بني"},
+ "vert+rouge":{hex:"#9A6B4F",fr:"Brun",en:"Brown",ar:"بني"}
+};
+function mixColors(){
+ const a=document.getElementById("colorA").value,b=document.getElementById("colorB").value;
+ const result=mixMap[a+"+"+b]||{hex:averageHex(colors.find(c=>c.id===a).hex,colors.find(c=>c.id===b).hex),fr:"Mélange spécial",en:"Special mix",ar:"مزيج خاص"};
+ document.getElementById("resultDot").style.background=result.hex;
+ document.getElementById("resultName").textContent=result[lang]||result.fr;
+ document.getElementById("resultDesc").textContent=lang==="ar"?"جرّب لونين مختلفين لاكتشاف نتيجة أخرى.":lang==="en"?"Try two different colours to discover another result.":"Essaie deux autres couleurs pour découvrir un nouveau résultat.";
+ speak(result[lang]||result.fr);
+}
+function averageHex(a,b){const parse=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const x=parse(a),y=parse(b);return "#"+x.map((v,i)=>Math.round((v+y[i])/2).toString(16).padStart(2,"0")).join("")}
+function answerQuiz(answer){const t=translations[lang];document.getElementById("quizFeedback").textContent=answer==="vert"?t.correct:t.wrong;if(answer==="vert")speak(t.correct)}
+setLang("fr");
+</script>
+</body>
+</html>
