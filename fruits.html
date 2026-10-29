@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Petit Génie : découvre et écoute les noms, puis joue pour apprendre."><title>Petit Génie — 🍎 Les Fruits 🍌</title>
+<style>
+:root{--blue:#168bd2;--ink:#23485e;--yellow:#ffcf4a;--green:#43bf7b}*{box-sizing:border-box}
+body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(#e9faff,#fffdf3);min-height:100vh}
+header{padding:16px clamp(12px,4vw,42px);background:white;box-shadow:0 4px 18px #174d6c12;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:9px;font-size:clamp(22px,3vw,31px);font-weight:900;color:var(--blue)}.brand small{display:block;font-size:12px;color:#e98c24;font-weight:700}.mascot{font-size:36px}
+nav,.lang{display:flex;gap:6px;flex-wrap:wrap}nav a,.lang button{border:0;border-radius:22px;background:#eef8ff;color:#24516c;padding:9px 13px;text-decoration:none;font-weight:800;cursor:pointer}nav a.active{background:var(--blue);color:white}.lang button{padding:8px 10px}
+.hero{max-width:1200px;margin:18px auto;padding:25px 14px;text-align:center;border:4px solid white;border-radius:28px;background:linear-gradient(120deg,#ffe18a,#fff1bd);box-shadow:0 8px 20px #36718b18}.hero h1{margin:0;color:#147db8;font-size:clamp(30px,6vw,54px);text-shadow:2px 3px white}.hero p{font-weight:800;color:#187c6b;margin:8px 0 0}
+main{max-width:1200px;margin:auto;padding:0 15px 35px}.section-title{font-size:clamp(22px,3vw,29px);color:#176f9d;margin:26px 0 12px}
+.panel{background:#fff;border:2px solid #cceef9;border-radius:22px;padding:clamp(14px,3vw,24px);box-shadow:0 7px 18px #1e70910b}
+.tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:15px}.tools input{padding:11px 13px;border:2px solid #cce7f3;border-radius:14px;font-size:16px;max-width:100%}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.item{border:2px solid #d8eef8;background:#fff;border-radius:17px;padding:9px;text-align:center;box-shadow:0 5px 12px #1e70910b;transition:.15s}.item:hover{transform:translateY(-3px);border-color:#69c5e9}.item img{width:100%;max-width:180px;aspect-ratio:240/190;object-fit:contain;display:block;margin:auto}.item h3{margin:5px 0 8px;font-size:clamp(14px,1.7vw,18px)}.btn{border:0;border-radius:22px;padding:9px 13px;font-weight:900;cursor:pointer}.listen{background:#e4f6ff;color:#147cb2}.primary{background:var(--blue);color:white;box-shadow:0 4px 0 #0c659c;padding:12px 18px}.game{background:#fff9e7;border:2px dashed #f1c85b;border-radius:20px;padding:20px;text-align:center}.game img{width:min(220px,65%);height:auto;display:block;margin:8px auto}.answers{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}.answers button{border:2px solid #dceef6;border-radius:18px;padding:11px 17px;background:white;font-weight:900;cursor:pointer;color:#24516c}.feedback{min-height:28px;font-weight:900;margin:12px 0}.score{display:inline-block;background:#fff1bd;border-radius:20px;padding:8px 14px;font-weight:900;margin:6px}.footer{text-align:center;padding:22px;color:#52839a;font-weight:700}
+@media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:520px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.item img{max-width:150px}}
+</style></head><body>
+<header><div class="brand"><span class="mascot">🧒</span><div>Petit Génie<small>Apprendre en s'amusant !</small></div></div>
+<nav><a href="index.html">🏠 Accueil</a><a href="animaux.html">🐾 Animaux</a><a href="couleur.html">🌈 Couleurs</a><a href="Chiffre.html">🔢 Chiffres</a><a class="active" href="fruits.html">🍎 Fruits</a><a href="legume.html">🥦 Légumes</a></nav>
+<div class="lang"><button onclick="setLang('fr')">🇫🇷 FR</button><button onclick="setLang('en')">🇬🇧 EN</button><button onclick="setLang('ar')">🇲🇦 AR</button></div></header>
+<section class="hero"><h1 id="heroTitle">🍎 Les Fruits 🍌</h1><p id="heroSub">Écoute, découvre et apprends le nom de 30 fruits !</p></section>
+<main><h2 class="section-title" id="discoverTitle">Découvre les aliments</h2><section class="panel">
+<div class="tools"><label id="searchLabel" for="search">🔎 Recherche :</label><input id="search" type="search" placeholder="Chercher..." oninput="renderItems()"><button class="btn listen" onclick="showRandom()" id="randomBtn">🎲 Au hasard</button></div>
+<div class="grid" id="itemsGrid"></div></section>
+<h2 class="section-title" id="activityTitle">🍓 Jeu : retrouve le bon fruit !</h2><section class="panel"><div class="game"><h3 id="gamePrompt">Quel est cet aliment ?</h3><img id="gameImage" src="" alt=""><div class="answers" id="answers"></div><div class="feedback" id="feedback" aria-live="polite"></div><span class="score" id="scoreLabel">⭐ Score : <span id="score">0</span></span><span class="score" id="roundLabel">Question <span id="round">1</span>/10</span><br><button class="btn primary" id="nextBtn" onclick="nextQuestion()">Question suivante ➜</button></div></section></main>
+<footer class="footer" id="footer">Petit Génie • J'apprends en m'amusant !</footer>
+<script>
+const items=[{id:'pomme',emoji:'🍎',fr:'Pomme',en:'Apple',ar:'تفاحة',img:'images/fruits/pomme.svg'},
+{id:'banane',emoji:'🍌',fr:'Banane',en:'Banana',ar:'موز',img:'images/fruits/banane.svg'},
+{id:'orange',emoji:'🍊',fr:'Orange',en:'Orange',ar:'برتقال',img:'images/fruits/orange.svg'},
+{id:'fraise',emoji:'🍓',fr:'Fraise',en:'Strawberry',ar:'فراولة',img:'images/fruits/fraise.svg'},
+{id:'raisin',emoji:'🍇',fr:'Raisin',en:'Grapes',ar:'عنب',img:'images/fruits/raisin.svg'},
+{id:'pasteque',emoji:'🍉',fr:'Pastèque',en:'Watermelon',ar:'بطيخ',img:'images/fruits/pasteque.svg'},
+{id:'ananas',emoji:'🍍',fr:'Ananas',en:'Pineapple',ar:'أناناس',img:'images/fruits/ananas.svg'},
+{id:'mangue',emoji:'🥭',fr:'Mangue',en:'Mango',ar:'مانجو',img:'images/fruits/mangue.svg'},
+{id:'poire',emoji:'🍐',fr:'Poire',en:'Pear',ar:'إجاص',img:'images/fruits/poire.svg'},
+{id:'peche',emoji:'🍑',fr:'Pêche',en:'Peach',ar:'خوخ',img:'images/fruits/peche.svg'},
+{id:'cerise',emoji:'🍒',fr:'Cerise',en:'Cherry',ar:'كرز',img:'images/fruits/cerise.svg'},
+{id:'citron',emoji:'🍋',fr:'Citron',en:'Lemon',ar:'ليمون',img:'images/fruits/citron.svg'},
+{id:'kiwi',emoji:'🥝',fr:'Kiwi',en:'Kiwi',ar:'كيوي',img:'images/fruits/kiwi.svg'},
+{id:'melon',emoji:'🍈',fr:'Melon',en:'Melon',ar:'شمام',img:'images/fruits/melon.svg'},
+{id:'framboise',emoji:'🫐',fr:'Myrtille',en:'Blueberry',ar:'توت أزرق',img:'images/fruits/framboise.svg'},
+{id:'avocat',emoji:'🥑',fr:'Avocat',en:'Avocado',ar:'أفوكادو',img:'images/fruits/avocat.svg'},
+{id:'noix_coco',emoji:'🥥',fr:'Noix de coco',en:'Coconut',ar:'جوز الهند',img:'images/fruits/noix_coco.svg'},
+{id:'papaye',emoji:'🧡',fr:'Papaye',en:'Papaya',ar:'بابايا',img:'images/fruits/papaye.svg'},
+{id:'grenade',emoji:'🍎',fr:'Grenade',en:'Pomegranate',ar:'رمان',img:'images/fruits/grenade.svg'},
+{id:'figue',emoji:'🟣',fr:'Figue',en:'Fig',ar:'تين',img:'images/fruits/figue.svg'},
+{id:'abricot',emoji:'🍑',fr:'Abricot',en:'Apricot',ar:'مشمش',img:'images/fruits/abricot.svg'},
+{id:'prune',emoji:'🟣',fr:'Prune',en:'Plum',ar:'برقوق',img:'images/fruits/prune.svg'},
+{id:'litchi',emoji:'🔴',fr:'Litchi',en:'Lychee',ar:'ليتشي',img:'images/fruits/litchi.svg'},
+{id:'fruit_passion',emoji:'🟠',fr:'Fruit de la passion',en:'Passion fruit',ar:'فاكهة العاطفة',img:'images/fruits/fruit_passion.svg'},
+{id:'pamplemousse',emoji:'🍊',fr:'Pamplemousse',en:'Grapefruit',ar:'جريب فروت',img:'images/fruits/pamplemousse.svg'},
+{id:'mandarine',emoji:'🍊',fr:'Mandarine',en:'Mandarin',ar:'يوسفي',img:'images/fruits/mandarine.svg'},
+{id:'datte',emoji:'🟤',fr:'Datte',en:'Date',ar:'تمر',img:'images/fruits/datte.svg'},
+{id:'coing',emoji:'🍐',fr:'Coing',en:'Quince',ar:'سفرجل',img:'images/fruits/coing.svg'},
+{id:'mure',emoji:'🫐',fr:'Mûre',en:'Blackberry',ar:'توت أسود',img:'images/fruits/mure.svg'},
+{id:'carambole',emoji:'⭐',fr:'Carambole',en:'Star fruit',ar:'فاكهة النجمة',img:'images/fruits/carambole.svg'}];
+const t={
+fr:{title:"🍎 Les Fruits 🍌",sub:"Écoute, découvre et apprends le nom de 30 fruits !",discover:"Découvre et écoute",search:"🔎 Recherche :",placeholder:"Chercher un nom...",random:"🎲 Au hasard",activity:"🍓 Jeu : retrouve le bon fruit !",prompt:"Quel est cet aliment ?",correct:"Bravo ! Bonne réponse ! 🎉",wrong:"Essaie encore !",next:"Question suivante ➜",score:"⭐ Score :",question:"Question",footer:"Petit Génie • J'apprends en m'amusant !",listen:"🔊 Écouter"},
+en:{title:"🍎 Fruits 🍌",sub:"Listen, discover and learn the names of 30 fruits!",discover:"Discover and listen",search:"🔎 Search:",placeholder:"Search a name...",random:"🎲 Random",activity:"🍓 Jeu : retrouve le bon fruit !EN",prompt:"What is this?",correct:"Well done! Correct answer! 🎉",wrong:"Try again!",next:"Next question ➜",score:"⭐ Score:",question:"Question",footer:"Petit Génie • Learning is fun!",listen:"🔊 Listen"},
+ar:{title:"🍎 الفواكه 🍌",sub:"استمع واكتشف وتعلّم أسماء 30 فاكهة!",discover:"اكتشف واستمع",search:"🔎 ابحث:",placeholder:"ابحث عن اسم...",random:"🎲 عشوائي",activity:"🍓 Jeu : retrouve le bon fruit !AR",prompt:"ما اسم هذا؟",correct:"أحسنت! إجابة صحيحة! 🎉",wrong:"حاول مرة أخرى!",next:"السؤال التالي ➜",score:"⭐ النتيجة:",question:"السؤال",footer:"Petit Génie • أتعلم وأستمتع!",listen:"🔊 استمع"}
+};
+let lang="fr",target=0,score=0,round=1,answered=false;
+function name(x){return x[lang]}
+function speak(text){if(!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang=lang==="ar"?"ar-SA":lang==="en"?"en-GB":"fr-FR";speechSynthesis.speak(u)}
+function renderItems(){let q=document.getElementById("search").value.trim().toLocaleLowerCase();document.getElementById("itemsGrid").innerHTML=items.map((x,i)=>({x,i})).filter(o=>[o.x.fr,o.x.en,o.x.ar].some(s=>s.toLocaleLowerCase().includes(q))).map(({x,i})=>`<article class="item"><img loading="lazy" src="${x.img}" alt="${name(x)}"><h3>${name(x)}</h3><button class="btn listen" onclick="speak(name(items[${i}]))">${t[lang].listen} 🔊</button></article>`).join("")}
+function showRandom(){let x=items[Math.floor(Math.random()*items.length)];speak(name(x));document.getElementById("search").value=name(x);renderItems()}
+function setLang(l){lang=l;document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";let a=t[l];document.getElementById("heroTitle").textContent=a.title;document.getElementById("heroSub").textContent=a.sub;document.getElementById("discoverTitle").textContent=a.discover;document.getElementById("searchLabel").textContent=a.search;document.getElementById("search").placeholder=a.placeholder;document.getElementById("randomBtn").textContent=a.random;document.getElementById("activityTitle").textContent=a.activity;document.getElementById("gamePrompt").textContent=a.prompt;document.getElementById("nextBtn").textContent=a.next;document.getElementById("footer").textContent=a.footer;document.getElementById("scoreLabel").childNodes[0].textContent=a.score+" ";renderItems();newQuestion()}
+function newQuestion(){answered=false;target=Math.floor(Math.random()*items.length);document.getElementById("feedback").textContent="";document.getElementById("gameImage").src=items[target].img;document.getElementById("gameImage").alt=name(items[target]);document.getElementById("round").textContent=round;let choices=new Set([target]);while(choices.size<4)choices.add(Math.floor(Math.random()*items.length));let arr=[...choices].sort(()=>Math.random()-.5);document.getElementById("answers").innerHTML=arr.map(i=>`<button onclick="answer(${i})">${name(items[i])}</button>`).join("")}
+function answer(i){if(answered)return;answered=true;let good=i===target;document.getElementById("feedback").textContent=good?t[lang].correct:t[lang].wrong;if(good){score++;document.getElementById("score").textContent=score;speak(t[lang].correct)}else speak(name(items[target]))}
+function nextQuestion(){if(round>=10&&answered){round=1;score=0;document.getElementById("score").textContent=score}else if(answered)round++;newQuestion()}
+setLang("fr");
+</script></body></html>
