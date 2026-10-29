@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petit Génie — Les Formes</title>
+<style>
+:root{--blue:#168bd2;--ink:#23485e}*{box-sizing:border-box}body{margin:0;font-family:"Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(#e9faff,#fffdf3)}
+header{padding:16px clamp(12px,4vw,42px);background:white;box-shadow:0 4px 18px #174d6c12;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.brand{display:flex;align-items:center;gap:9px;font-size:clamp(22px,3vw,31px);font-weight:900;color:var(--blue)}.brand small{display:block;font-size:12px;color:#e98c24}.mascot{font-size:36px}
+nav,.langs{display:flex;gap:6px;flex-wrap:wrap}nav a,.langs button{border:0;border-radius:22px;background:#eef8ff;color:#24516c;padding:9px 12px;text-decoration:none;font-weight:800;cursor:pointer}nav a.active{background:var(--blue);color:white}
+.hero{max-width:1200px;margin:18px auto;padding:25px 14px;text-align:center;border:4px solid white;border-radius:28px;background:linear-gradient(120deg,#ffe18a,#fff1bd)}.hero h1{margin:0;color:#147db8;font-size:clamp(30px,6vw,54px);text-shadow:2px 3px white}.hero p{font-weight:800;color:#187c6b;margin:8px 0 0}
+main{max-width:1200px;margin:auto;padding:0 15px 35px}.title{font-size:clamp(22px,3vw,29px);color:#176f9d;margin:26px 0 12px}.panel{background:#fff;border:2px solid #cceef9;border-radius:22px;padding:clamp(14px,3vw,24px)}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.card{border:2px solid #d8eef8;background:white;border-radius:17px;padding:9px;text-align:center}.card img{width:100%;max-width:180px;aspect-ratio:240/190;object-fit:contain}.card h3{margin:4px 0 8px}.btn{border:0;border-radius:22px;padding:10px 15px;font-weight:900;cursor:pointer}.listen{background:#e4f6ff;color:#147cb2}.primary{background:#168bd2;color:#fff;box-shadow:0 4px 0 #0c659c}
+.draw-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:start}.prompt{background:#fff9e7;border:2px dashed #f1c85b;border-radius:18px;padding:16px;text-align:center}.prompt img{width:min(220px,80%);display:block;margin:8px auto}.prompt h3{font-size:25px;margin:8px}.canvas-wrap{background:#f7fcff;border:2px solid #dceef6;border-radius:18px;padding:10px}canvas{width:100%;height:auto;display:block;touch-action:none;background:white;border:2px dashed #b7dceb;border-radius:12px;cursor:crosshair}.draw-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.feedback{min-height:28px;font-weight:900;margin-top:10px}.help{color:#5d8295;font-size:14px}
+footer{text-align:center;padding:22px;color:#52839a;font-weight:700}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.draw-layout{grid-template-columns:1fr}.card img{max-width:150px}}
+</style></head><body>
+<header><div class="brand"><span class="mascot">🧒</span><div>Petit Génie<small>Apprendre en s'amusant !</small></div></div>
+<nav><a href="index.html">🏠 Accueil</a><a href="animaux.html">🐾 Animaux</a><a href="couleur.html">🌈 Couleurs</a><a href="Chiffre.html">🔢 Chiffres</a><a href="fruits.html">🍎 Fruits</a><a href="legume.html">🥦 Légumes</a><a class="active" href="forme.html">🔷 Formes</a></nav>
+<div class="langs"><button onclick="setLang('fr')">🇫🇷 FR</button><button onclick="setLang('en')">🇬🇧 EN</button><button onclick="setLang('ar')">🇲🇦 AR</button></div></header>
+<section class="hero"><h1 id="hero">🔷 Les formes</h1><p id="sub">Découvre 10 formes, écoute leurs noms et entraîne-toi à les dessiner !</p></section>
+<main><h2 class="title" id="learnTitle">🎨 Découvre les 10 formes</h2><section class="panel"><div class="grid" id="shapeGrid"></div></section>
+<h2 class="title" id="drawTitle">✏️ À toi de dessiner !</h2><section class="panel"><div class="draw-layout"><div class="prompt"><p id="taskLabel">Dessine la forme demandée :</p><img id="targetImg" src="images/formes/cercle.svg" alt="Forme à dessiner"><h3 id="targetName">Cercle</h3><button class="btn listen" onclick="sayTarget()" id="hearBtn">🔊 Écouter le nom</button><p class="help" id="tip">Dessine avec ton doigt sur la zone blanche.</p></div>
+<div class="canvas-wrap"><canvas id="drawCanvas" width="600" height="420" aria-label="Zone de dessin"></canvas><div class="draw-tools"><button class="btn primary" onclick="checkDrawing()" id="checkBtn">⭐ J'ai terminé !</button><button class="btn listen" onclick="clearCanvas()" id="clearBtn">🧽 Effacer</button><button class="btn listen" onclick="newTarget()" id="nextShape">➡️ Forme suivante</button></div><div class="feedback" id="feedback" aria-live="polite"></div></div></div></section></main>
+<footer id="footer">Petit Génie • J'apprends en m'amusant !</footer>
+<script>
+const shapes=[{id:'cercle',fr:'Cercle',en:'Circle',ar:'دائرة',img:'images/formes/cercle.svg'},
+{id:'carre',fr:'Carré',en:'Square',ar:'مربع',img:'images/formes/carre.svg'},
+{id:'triangle',fr:'Triangle',en:'Triangle',ar:'مثلث',img:'images/formes/triangle.svg'},
+{id:'rectangle',fr:'Rectangle',en:'Rectangle',ar:'مستطيل',img:'images/formes/rectangle.svg'},
+{id:'etoile',fr:'Étoile',en:'Star',ar:'نجمة',img:'images/formes/etoile.svg'},
+{id:'coeur',fr:'Cœur',en:'Heart',ar:'قلب',img:'images/formes/coeur.svg'},
+{id:'ovale',fr:'Ovale',en:'Oval',ar:'شكل بيضاوي',img:'images/formes/ovale.svg'},
+{id:'losange',fr:'Losange',en:'Diamond',ar:'مُعين',img:'images/formes/losange.svg'},
+{id:'pentagone',fr:'Pentagone',en:'Pentagon',ar:'خماسي الأضلاع',img:'images/formes/pentagone.svg'},
+{id:'hexagone',fr:'Hexagone',en:'Hexagon',ar:'سداسي الأضلاع',img:'images/formes/hexagone.svg'}];
+const tr={
+fr:{hero:"🔷 Les formes",sub:"Découvre 10 formes, écoute leurs noms et entraîne-toi à les dessiner !",learn:"🎨 Découvre les 10 formes",draw:"✏️ À toi de dessiner !",task:"Dessine la forme demandée :",hear:"🔊 Écouter le nom",tip:"Dessine avec ton doigt ou la souris dans la zone blanche.",check:"⭐ J'ai terminé !",clear:"🧽 Effacer",next:"➡️ Forme suivante",success:"Bravo ! Tu as terminé ton dessin ! 🎉",cleared:"La zone est prête. À toi de dessiner !",footer:"Petit Génie • J'apprends en m'amusant !",listen:"🔊 Écouter"},
+en:{hero:"🔷 Shapes",sub:"Discover 10 shapes, listen to their names and practise drawing them!",learn:"🎨 Discover 10 shapes",draw:"✏️ Your turn to draw!",task:"Draw the requested shape:",hear:"🔊 Hear the name",tip:"Draw with your finger or mouse in the white area.",check:"⭐ I'm done!",clear:"🧽 Clear",next:"➡️ Next shape",success:"Great job! You finished your drawing! 🎉",cleared:"The canvas is ready. Start drawing!",footer:"Petit Génie • Learning is fun!",listen:"🔊 Listen"},
+ar:{hero:"🔷 الأشكال الهندسية",sub:"اكتشف 10 أشكال، واستمع إلى أسمائها وتدرّب على رسمها!",learn:"🎨 اكتشف الأشكال العشرة",draw:"✏️ حان دورك للرسم!",task:"ارسم الشكل المطلوب:",hear:"🔊 استمع إلى الاسم",tip:"ارسم بإصبعك أو بالفأرة داخل المساحة البيضاء.",check:"⭐ انتهيت!",clear:"🧽 امسح",next:"➡️ الشكل التالي",success:"أحسنت! لقد أكملت الرسم! 🎉",cleared:"المساحة جاهزة، ابدأ الرسم!",footer:"Petit Génie • أتعلم وأستمتع!",listen:"🔊 استمع"}
+};
+let lang="fr",target=0,drawing=false,ctx;
+function name(s){return s[lang]}
+function speak(text){if(!("speechSynthesis"in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(text);u.lang=lang==="ar"?"ar-SA":lang==="en"?"en-GB":"fr-FR";speechSynthesis.speak(u)}
+function renderGrid(){document.getElementById("shapeGrid").innerHTML=shapes.map((s,i)=>`<article class="card"><img loading="lazy" src="${s.img}" alt="${name(s)}"><h3>${name(s)}</h3><button class="btn listen" onclick="speak(name(shapes[${i}]))">${tr[lang].listen}</button></article>`).join("")}
+function setLang(l){lang=l;document.documentElement.lang=l;document.documentElement.dir=l==="ar"?"rtl":"ltr";let t=tr[l];for(let [id,key] of [["hero","hero"],["sub","sub"],["learnTitle","learn"],["drawTitle","draw"],["taskLabel","task"],["hearBtn","hear"],["tip","tip"],["checkBtn","check"],["clearBtn","clear"],["nextShape","next"],["footer","footer"]])document.getElementById(id).textContent=t[key];renderGrid();updateTarget()}
+function updateTarget(){let s=shapes[target];document.getElementById("targetImg").src=s.img;document.getElementById("targetImg").alt=name(s);document.getElementById("targetName").textContent=name(s)}
+function sayTarget(){speak(name(shapes[target]))}
+function newTarget(){target=(target+1)%shapes.length;updateTarget();clearCanvas();document.getElementById("feedback").textContent="";sayTarget()}
+function clearCanvas(){ctx.clearRect(0,0,drawCanvas.width,drawCanvas.height);document.getElementById("feedback").textContent=tr[lang].cleared}
+function checkDrawing(){let pixels=ctx.getImageData(0,0,drawCanvas.width,drawCanvas.height).data,found=false;for(let i=3;i<pixels.length;i+=4){if(pixels[i]>0){found=true;break}}document.getElementById("feedback").textContent=found?tr[lang].success:(lang==="ar"?"ارسم الشكل أولًا ثم اضغط على انتهيت!":lang==="en"?"Draw the shape first, then press I'm done!":"Dessine d'abord la forme, puis appuie sur « J'ai terminé ! »");if(found)speak(tr[lang].success)}
+const drawCanvas=document.getElementById("drawCanvas");ctx=drawCanvas.getContext("2d");ctx.lineWidth=8;ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#168bd2";
+function pos(e){let r=drawCanvas.getBoundingClientRect();return {x:(e.clientX-r.left)*drawCanvas.width/r.width,y:(e.clientY-r.top)*drawCanvas.height/r.height}}
+drawCanvas.addEventListener("pointerdown",e=>{drawing=true;drawCanvas.setPointerCapture(e.pointerId);let p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x+0.1,p.y+0.1);ctx.stroke()});
+drawCanvas.addEventListener("pointermove",e=>{if(!drawing)return;let p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke()});
+["pointerup","pointercancel","lostpointercapture"].forEach(ev=>drawCanvas.addEventListener(ev,()=>drawing=false));
+setLang("fr");
+</script></body></html>
